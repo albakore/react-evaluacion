@@ -3,17 +3,21 @@ import { Table,Button } from "reactstrap";
 
 export default function TablaDatos() {
   const [Usuarios, setUsuarios] = useState();
+  const listaUsuarios = async () => {
+    const response = await fetch("http://localhost:5000/usuarios");
+    const dato = await response.json();
+    setUsuarios(dato);
+  };
 
   useEffect(() => {
     if (!Usuarios) {
-      const listaUsuarios = async () => {
-        const response = await fetch("http://localhost:5000/usuarios");
-        const dato = await response.json();
-        setUsuarios(dato);
-      };
       listaUsuarios();
     }
   }, [Usuarios]);
+
+  useEffect(() => {
+      listaUsuarios();
+  }, []);
 
 
   return (
@@ -37,9 +41,9 @@ export default function TablaDatos() {
             return (
               <tr key={valor.id}>
                 <th scope="row" key={valor.id}>{valor.id}</th>
-                <td contentEditable>{valor.nombre}</td>
-                <td contentEditable>{valor.apellido}</td>
-                <td contentEditable>{valor.dni}</td>
+                <td >{valor.nombre}</td>
+                <td >{valor.apellido}</td>
+                <td >{valor.dni}</td>
                 <td >
                   <Button className="m-1">Editar</Button>
                   <Button color="danger" className="m-1">Borrar</Button>
@@ -48,6 +52,7 @@ export default function TablaDatos() {
             );
           })): <></>
         }
+
 
         </tbody>
       </Table>

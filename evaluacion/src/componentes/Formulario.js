@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Label, Input, Button, Container } from "reactstrap";
-export default function Formulario() {
+export default function Formulario({nuevoUsuario}) {
   const initForm = { nombre: "", apellido: "", dni: "" };
   const [formulario, setformulario] = useState(initForm);
 
@@ -24,6 +24,7 @@ export default function Formulario() {
       const response = await fetch("http://localhost:5000/crearUsuario",opcionDeRequest);
       const resultado = await response.json();
       console.log(resultado);
+      nuevoUsuario(resultado);
       setformulario(initForm);
     }
     
@@ -33,7 +34,12 @@ export default function Formulario() {
 
   const datoCambiado = (evento) => {
     const {name, value} = evento.target;
-    setformulario({...formulario, [name] : value});
+    if (name === "dni"){
+      const numero = Number(value);
+      setformulario({...formulario, dni : numero});
+    }else{
+      setformulario({...formulario, [name] : value});
+    }
     console.log(formulario);
   };
 
