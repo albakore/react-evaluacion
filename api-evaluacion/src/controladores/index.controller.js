@@ -5,7 +5,7 @@ const { Pool } = require("pg");
 const db = new Pool({
     host: 'localhost',
     user: 'postgres',
-    password:'1234',
+    password:'admin',
     database:'evaluacion',
     port:'5432'
 })
@@ -29,13 +29,13 @@ const modificarUsuario = async (req,res) => {
     await db.query('UPDATE listado_usuarios SET nombre = $1, apellido = $2, dni = $3 WHERE id = $4',[nombre,apellido,dni,id]);
     const response = await db.query('SELECT * FROM listado_usuarios ORDER BY id ASC'); 
     console.log(response.rows);
-    res.json(response.rows);
+    res.send("El usuario con id " + id + ", fue modificado! ");
 };
 
 const eliminarUsuario = async (req,res) => {
     const id = req.params.id;
     await db.query('DELETE FROM listado_usuarios WHERE id = $1',[id]);
-    res.send("El usuario con id " + id + ", fue eliminado ");
+    res.send("El usuario con id " + id + ", fue eliminado! ");
 };
 
 module.exports ={
